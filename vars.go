@@ -179,15 +179,15 @@ type WidgetResponse struct {
 
 // WidgetComparisonItem - system info for comparison item part of WidgetResponse
 type WidgetComparisonItem struct {
-	Geo                            map[string]string   `json:"geo,omitempty" bson:"geo"`
-	Time                           string              `json:"time,omitempty" bson:"time"`
-	ComplexKeywordsRestriction     KeywordsRestriction `json:"complexKeywordsRestriction,omitempty" bson:"complex_keywords_restriction"`
-	OriginalTimeRangeForExploreURL string              `json:"originalTimeRangeForExploreUrl,omitempty" bson:"original_time_range_for_explore_url"`
+	Geo                            map[string]string    `json:"geo,omitempty" bson:"geo"`
+	Time                           string               `json:"time,omitempty" bson:"time"`
+	ComplexKeywordsRestriction     *KeywordsRestriction `json:"complexKeywordsRestriction,omitempty" bson:"complex_keywords_restriction,omitempty"`
+	OriginalTimeRangeForExploreURL string               `json:"originalTimeRangeForExploreUrl,omitempty" bson:"original_time_range_for_explore_url"`
 }
 
 // KeywordsRestriction - system info for keywords limitations, not used. part of WidgetResponse
 type KeywordsRestriction struct {
-	Keyword []*KeywordRestriction `json:"keyword" bson:"keyword"`
+	Keyword []*KeywordRestriction `json:"keyword,omitempty" bson:"keyword,omitempty"`
 }
 
 // KeywordRestriction - specific keyword limitation. Part of KeywordsRestriction
@@ -240,14 +240,14 @@ type GeoMap struct {
 }
 
 type relatedOut struct {
-	Default relatedList `json:"default" bson:"default"`
+	Default RelatedList `json:"default" bson:"default"`
 }
 
-type relatedList struct {
-	Ranked []*rankedList `json:"rankedList" bson:"ranked"`
+type RelatedList struct {
+	Ranked []*RankedList `json:"rankedList" bson:"ranked"`
 }
 
-type rankedList struct {
+type RankedList struct {
 	Keywords []*RankedKeyword `json:"rankedKeyword" bson:"keywords"`
 }
 

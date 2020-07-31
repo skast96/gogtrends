@@ -248,7 +248,7 @@ func InterestByLocation(ctx context.Context, w *ExploreWidget, hl string) ([]*Ge
 }
 
 // Related topics or queries, list of `RankedKeyword`, supports two types of widgets.
-func Related(ctx context.Context, w *ExploreWidget, hl string) ([]*RankedKeyword, error) {
+func Related(ctx context.Context, w *ExploreWidget, hl string) ([]*RankedList, error) {
 	if w.ID != relatedQueriesID && w.ID != relatedTopicsID {
 		return nil, ErrInvalidWidgetType
 	}
@@ -262,6 +262,12 @@ func Related(ctx context.Context, w *ExploreWidget, hl string) ([]*RankedKeyword
 
 	if len(w.Request.Restriction.Geo) == 0 {
 		w.Request.Restriction.Geo[""] = ""
+	}
+
+	if w.Request.Restriction.ComplexKeywordsRestriction != nil {
+		if w.Request.Restriction.ComplexKeywordsRestriction.Keyword == nil {
+			w.Request.Restriction.ComplexKeywordsRestriction = nil
+		}
 	}
 
 	// marshal request for query param
@@ -286,11 +292,5 @@ func Related(ctx context.Context, w *ExploreWidget, hl string) ([]*RankedKeyword
 		return nil, err
 	}
 
-	// split all keywords together
-	keywords := make([]*RankedKeyword, 0)
-	for _, v := range out.Default.Ranked {
-		keywords = append(keywords, v.Keywords...)
-	}
-
-	return keywords, nil
+	return out.Default.Ranked, nil
 }
